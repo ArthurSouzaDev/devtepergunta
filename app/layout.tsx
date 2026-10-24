@@ -24,13 +24,13 @@ export default function RootLayout({
           <header className="masthead">
             <h1 className="brand">devtepergunta</h1>
             <p className="byline">
-              Inspirado em{" "}
+              por{" "}
               <a
-                href="https://instagram.com/mamejunqueira"
+                href="https://www.instagram.com/thursouzss/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                @mamejunqueira
+                @thursouzss
               </a>
             </p>
           </header>
