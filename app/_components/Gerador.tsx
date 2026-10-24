@@ -20,8 +20,8 @@ type Phase = "idle" | "research" | "speak" | "done";
 type Filter = "Tudo" | Category;
 
 const FILTERS: Filter[] = ["Tudo", ...CATEGORIES];
-const SAVED_KEY = "em-pauta-tech:saved";
-const PROGRESS_KEY = "em-pauta-tech:progress";
+const SAVED_KEY = "devtepergunta:saved";
+const PROGRESS_KEY = "devtepergunta:progress";
 
 /** Sorteia uma pauta da categoria escolhida, evitando repetir a atual */
 function pickFrom(filter: Filter, exclude?: string): Topic | null {
@@ -142,6 +142,14 @@ export default function Gerador() {
 
   const isSaved = topic ? saved.includes(topic.id) : false;
 
+  const savedTopics = saved
+    .map((id) => TOPICS.find((t) => t.id === id))
+    .filter((t): t is Topic => Boolean(t));
+
+  function removeSaved(id: string) {
+    setSaved((list) => list.filter((x) => x !== id));
+  }
+
   return (
     <section className="stage" aria-live="polite">
       <nav className="filters" aria-label="Categorias">
@@ -205,10 +213,10 @@ export default function Gerador() {
           {phase === "idle" && topic && (
             <>
               <button type="button" className="btn" onClick={startResearch}>
-                🔬 Pesquisar · 10 min
+                Pesquisar · 10 min
               </button>
               <button type="button" className="btn" onClick={startSpeak}>
-                🎙️ Falar · 1 min
+                Falar · 1 min
               </button>
             </>
           )}
@@ -225,7 +233,7 @@ export default function Gerador() {
               className="btn btn-primary-outline"
               onClick={complete}
             >
-              ✓ Falei!
+              Falei!
             </button>
           )}
 
@@ -264,6 +272,37 @@ export default function Gerador() {
 
         <Streak progress={progress} justWon={lastWin} />
       </div>
+
+      {savedTopics.length > 0 && (
+        <section className="saved" aria-label="Pautas salvas">
+          <h2 className="saved-title">Salvos</h2>
+          <ul className="saved-list">
+            <AnimatePresence initial={false}>
+              {savedTopics.map((t) => (
+                <motion.li
+                  key={t.id}
+                  className="saved-item"
+                  layout={!reduce}
+                  initial={reduce ? false : { opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={reduce ? { opacity: 0 } : { opacity: 0, x: -14 }}
+                  transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <span className="saved-name">{t.title}</span>
+                  <button
+                    type="button"
+                    className="saved-remove"
+                    onClick={() => removeSaved(t.id)}
+                    aria-label={`Remover "${t.title}" dos salvos`}
+                  >
+                    ×
+                  </button>
+                </motion.li>
+              ))}
+            </AnimatePresence>
+          </ul>
+        </section>
+      )}
     </section>
   );
 }

@@ -1,9 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import Link from "next/link";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Em Pauta Tech",
+  title: "devtepergunta",
   description:
     "Gira um assunto de tecnologia, pesquisa por 10 minutos e fala por 1 minuto.",
 };
@@ -23,10 +22,7 @@ export default function RootLayout({
       <body>
         <div className="shell">
           <header className="masthead">
-            <h1 className="brand">
-              Em pauta
-              <span className="brand-tag">Tech</span>
-            </h1>
+            <h1 className="brand">devtepergunta</h1>
             <p className="byline">
               Inspirado em{" "}
               <a
@@ -37,11 +33,6 @@ export default function RootLayout({
                 @mamejunqueira
               </a>
             </p>
-            <nav aria-label="Principal">
-              <Link href="/salvos" className="pill">
-                Salvos →
-              </Link>
-            </nav>
           </header>
 
           {children}
