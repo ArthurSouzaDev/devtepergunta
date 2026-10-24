@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { CATEGORIES, TOPICS, type Category, type Topic } from "@/lib/topics";
 import { useStoredState } from "@/lib/useStoredState";
@@ -153,17 +153,22 @@ export default function Gerador() {
   return (
     <section className="stage" aria-live="polite">
       <nav className="filters" aria-label="Categorias">
-        {FILTERS.map((f) => (
-          <button
-            key={f}
-            type="button"
-            className={`pill ${filter === f ? "active" : ""}`}
-            aria-pressed={filter === f}
-            onClick={() => changeFilter(f)}
-            disabled={running}
-          >
-            {f}
-          </button>
+        {FILTERS.map((f, i) => (
+          <Fragment key={f}>
+            <button
+              type="button"
+              className={`pill ${filter === f ? "active" : ""}`}
+              aria-pressed={filter === f}
+              onClick={() => changeFilter(f)}
+              disabled={running}
+            >
+              {f}
+            </button>
+            {/* quebras de linha usadas só em telas pequenas (2 + 2 + 3) */}
+            {(i === 1 || i === 3) && (
+              <span className="filters-break" aria-hidden="true" />
+            )}
+          </Fragment>
         ))}
       </nav>
 
